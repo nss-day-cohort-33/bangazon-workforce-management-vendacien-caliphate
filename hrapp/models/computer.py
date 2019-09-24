@@ -1,7 +1,6 @@
 from django.db import models
 from django.urls import reverse
 
-
 class Computer(models.Model):
     '''
     description: This class creates a computer and its properties
