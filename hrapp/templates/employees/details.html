@@ -1,0 +1,35 @@
+{% extends 'shared/base.html' %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Library</title>
+</head>
+
+<body>
+    {% block content %}
+    <section id="book-details">
+        <h1>{{ employee.first_name }} {{ employee.last_name}}</h1>
+
+        <div>Start Date: {{ employee.start_date }}</div>
+        <div>Department: {{ employee.department.name }}</div>
+    </section>
+
+    <section id="employee-actions" style="display:flex;">
+        <form action="{% url 'hrapp:employees' employee.id %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="actual_method" value="DELETE">
+            <button>Delete</button>
+        </form>
+
+        <form action="{% url 'hrapp:employee_edit_form' employee.id %}" method="GET">
+            {% csrf_token %}
+            <button>Edit</button>
+        </form>
+    </section>
+    {% endblock %}
+</body>
+
+</html>

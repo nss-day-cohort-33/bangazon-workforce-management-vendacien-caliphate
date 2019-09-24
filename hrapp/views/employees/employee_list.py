@@ -37,7 +37,7 @@ def employee_list(request):
 
     template = 'employees/employees_list.html'
     context = {
-        'employees': all_employees
+        'all_employees': all_employees
     }
 
     return render(request, template, context)
