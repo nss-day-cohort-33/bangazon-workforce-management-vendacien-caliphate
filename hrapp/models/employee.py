@@ -1,5 +1,9 @@
 from django.db import models
+from django.urls import reverse
+
 # from .department import Department
+from .department import Department
+
 
 class Employee(models.Model):
 
@@ -7,7 +11,7 @@ class Employee(models.Model):
     last_name = models.CharField(max_length=100)
     start_date = models.DateField()
     is_supervisor = models.BooleanField()
-    # department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = ("Employee")
