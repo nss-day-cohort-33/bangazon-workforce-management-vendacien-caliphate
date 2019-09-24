@@ -7,3 +7,6 @@ class Department(models.Model):
     budget = models.IntegerField()
 
 
+
+
+
