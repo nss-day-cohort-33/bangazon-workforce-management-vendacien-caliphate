@@ -1,6 +1,9 @@
 from django.db import models
-from .department import Department
 from django.urls import reverse
+
+# from .department import Department
+from .department import Department
+
 
 class Employee(models.Model):
 
