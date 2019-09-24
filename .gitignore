@@ -31,7 +31,6 @@ media/
 
 # django migrations
 migrations
-README.md
 
 #db location
 hrapp/views/connection.py
