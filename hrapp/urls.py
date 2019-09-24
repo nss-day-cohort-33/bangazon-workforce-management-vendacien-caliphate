@@ -11,5 +11,4 @@ urlpatterns = [
     path('employees/', employee_list, name='employees'),
     path('departments/', department_list, name='departments'),
     path('trainingprograms/', training_program_list, name='trainingprograms')
-
 ]
