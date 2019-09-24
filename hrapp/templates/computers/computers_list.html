@@ -1,0 +1,15 @@
+{% extends 'shared/base.html' %}
+
+{% block content %}
+<h1>Computers</h1>
+
+<ol>
+{% for computer in computers %}
+    <li>
+        <p>{{ computer.make }}</p>
+        <a href=# >Details</a>
+        {% comment %} Current employee: {{computer.employee}} {% endcomment %}
+    </li>
+{% endfor %}
+</ol>
+{% endblock content %}
