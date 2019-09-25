@@ -1,14 +1,33 @@
+
+
 {% extends 'shared/base.html' %}
+
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Departments List</title>
+  </head>
+  <body>
+
+
 
 {% block content %}
 <h1>Departments</h1>
 
+<a href="{% url 'hrapp:department_form' %}">Create New Department</a>
+
 <ol>
-{% for department in departments %}
+{% for department in all_departments %}
     <li>
-        <p>{{ department }}</p>
-        Name of Departments: {{department.name}}
+        <p>{{ department.name }}</p>
+        <p>Budget: ${{department.budget}}</p>
+        <p>Number of employees: {{ department.employees|length }}</p>
     </li>
 {% endfor %}
 </ol>
-{% endblock content %}
+{% endblock  %}
+
+</body>
+</html>

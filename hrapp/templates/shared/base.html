@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,7 +25,7 @@
 
     <nav id="site-nav">
         <ol class="navList">
-            <li class="navList__route"><a href="{% url 'hrapp:departments' %}">Departments</a></li>
+            <li class="navList__route"><a href="{% url 'hrapp:department_list' %}">Departments</a></li>
             <li class="navList__route"><a href="{% url 'hrapp:employees' %}">Employees</a></li>
             <li class="navList__route"><a href="{% url 'hrapp:computers' %}">Computers</a></li>
             <li class="navList__route"><a href="{% url 'hrapp:trainingprograms' %}">Training Programs</a></li>
