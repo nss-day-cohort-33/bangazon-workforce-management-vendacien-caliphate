@@ -11,6 +11,7 @@
        <a href="{% url 'hrapp:trainingprogram' training_program.id %}"> {{ training_program.title }}</a>
     </li>
 {% endfor %}
+    <a href="{% url 'hrapp:past_programs' %}">View Past Training Programs</a>
 </ol>
 {% endblock content %}
 

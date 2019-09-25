@@ -9,3 +9,4 @@ from .connection import Connection
 from .trainingprograms.training_program_list import training_program_list
 from .trainingprograms.form import training_program_form
 from .trainingprograms.details import training_program_details
+from .trainingprograms.past_list import past_program_list
