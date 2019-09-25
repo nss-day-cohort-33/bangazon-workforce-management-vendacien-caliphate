@@ -3,6 +3,7 @@ from django.shortcuts import render
 # from django.contrib.auth.decorators import login_required
 from ..connection import Connection
 from hrapp.models import Employee, Department
+from django.urls import reverse
 # from .details import get_book
 
 
@@ -25,7 +26,7 @@ def get_departments():
 def department_form(request):
     if request.method == 'GET':
         departments = get_departments()
-        template = 'departments/departments-form.html'
+        template = 'departments/departments_form.html'
         context = {
             'all_departments': departments
         }
@@ -35,16 +36,16 @@ def department_form(request):
 
 
 # @login_required
-# def book_edit_form(request, book_id):
+def department_edit_form(request, department_id):
 
-#     if request.method == 'GET':
-#         book = get_book(book_id)
-#         libraries = get_libraries()
+    if request.method == 'GET':
+        department = get_departments(department_id)
+        # departments = get_departments()
 
-#         template = 'books/form.html'
-#         context = {
-#             'book': book,
-#             'all_libraries': libraries
-#         }
+        template = 'departments/departments_form.html'
+        context = {
+            'department': department,
+            # 'all_departments': departments
+        }
 
-#         return render(request, template, context)
+        return render(request, template, context)
