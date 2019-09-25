@@ -46,7 +46,7 @@ def get_employee(employee_id):
             e.last_name,
             e.start_date,
             e.is_supervisor,
-            e.department_id,
+            e.department_id
         FROM hrapp_employee e
         WHERE e.id = ?
         """, (employee_id,))

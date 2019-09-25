@@ -98,10 +98,6 @@ def employee_details(request, employee_id):
     elif request.method == 'POST':
         form_data = request.POST
 
-        # Check if this POST is for deleting a book
-        #
-        # Note: You can use parenthesis to break up complex
-        #       `if` statements for higher readability
         if (
             "actual_method" in form_data
             and form_data["actual_method"] == "DELETE"
@@ -114,7 +110,7 @@ def employee_details(request, employee_id):
                 WHERE id = ?
                 """, (employee_id,))
 
-            return redirect(reverse('hrapp:employee'))
+            return redirect(reverse('hrapp:employees'))
 
         if (
             "actual_method" in form_data
