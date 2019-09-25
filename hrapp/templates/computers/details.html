@@ -13,19 +13,19 @@
 
         <div>Make: {{ computer.make }}</div>
         <div>Purchase date: {{ computer.purchase_date }}</div>
-        <div>Registered by: {{ computer.employee.id}} {{ computer.employee.id }}</div>
+        <div>Registered by: {{ employeecomputer.computer_id}} {{ computer.employee.id }}</div>
     </section>
 
     <section id="computer-actions" style="display:flex;">
-        {% comment %} <form action="{% url 'hrapp:computer' computer.id %}" method="POST">
+        <form action="{% url 'hrapp:computer' computer.id %}" method="POST">
             {% csrf_token %}
             <input type="hidden" name="actual_method" value="DELETE">
             <button>Delete</button>
-        </form> {% endcomment %}
+        </form>
 
-        {% comment %} <form action="{% url 'hrapp:computer_edit_form' computer.id %}" method="GET">
+        <form action="{% url 'hrapp:computer_edit_form' computer.id %}" method="GET">
             {% csrf_token %}
-            <button>Edit</button> {% endcomment %}
+            <button>Edit</button>
         </form>
     </section>
 

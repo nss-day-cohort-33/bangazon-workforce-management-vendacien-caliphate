@@ -1,0 +1,46 @@
+[
+    {
+      "model": "hrapp.employee",
+      "pk": 1,
+      "fields": {
+        "first_name": "Sampson",
+        "last_name": "Simspon",
+        "start_date": "2014-03-09",
+        "is_supervisor": false,
+        "department_id": 1
+      }
+    },
+    {
+      "model": "hrapp.employee",
+      "pk": 2,
+      "fields": {
+        "first_name": "Juniper",
+        "last_name": "Simspon",
+        "start_date": "1982-03-09",
+        "is_supervisor": true,
+        "department_id": 1
+      }
+    },
+    {
+      "model": "hrapp.employee",
+      "pk": 3,
+      "fields": {
+        "first_name": "Sulley",
+        "last_name": "Simspon",
+        "start_date": "2016-10-20",
+        "is_supervisor": false,
+        "department_id": 1
+      }
+    },
+    {
+      "model": "hrapp.employee",
+      "pk": 4,
+      "fields": {
+        "first_name": "Sally",
+        "last_name": "Simspon",
+        "start_date": "2017-10-20",
+        "is_supervisor": false,
+        "department_id": 1
+      }
+    }
+]

@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from hrapp.models import Computer
-from hrapp.models import employee
+from hrapp.models import Employee
 from ..connection import Connection
 
 
@@ -18,9 +18,12 @@ def get_computer(computer_id):
             c.make,
             c.purchase_date,
             c.decommission_date,
-        	ec.employee_id
+            e.id employee_id,
+        	e.first_name,
+            e.last_name
         FROM hrapp_computer c
-        LEFT JOIN hrapp_employeecomputer ec ON ec.computer_id = ec.id
+        LEFT JOIN hrapp_employeecomputer ec ON ec.computer_id = c.id
+        LEFT JOIN hrapp_employee e ON e.id = ec.id
         WHERE c.id = ?
         """, (computer_id,))
 
@@ -82,16 +85,9 @@ def create_computer(cursor, row):
     computer.purchase_date = _row["purchase_date"]
     computer.decommission_date = _row["decommission_date"]
 
-    # librarian = Librarian()
-    # librarian.id = _row["librarian_id"]
-    # librarian.first_name = _row["first_name"]
-    # librarian.last_name = _row["last_name"]
-
-    # library = Library()
-    # library.id = _row["library_id"]
-    # library.title = _row["library_name"]
-
-    # book.librarian = librarian
-    # book.location = library
+    employee = Employee()
+    employee.id = _row["employee_id"]
+    employee.first_name = _row["first_name"]
+    employee.last_name = _row["last_name"]
 
     return computer
