@@ -1,0 +1,26 @@
+  {% extends 'shared/base.html' %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Training Program</title>
+  </head>
+  <body>
+
+{% block content %}
+
+    <h1>{{ training_program.title }}</h1>
+
+    <form action="{% url 'hrapp:trainingprogram' training_program_id %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="actual_method" value="DELETE">
+    <button>Delete</button>
+    {% comment %} </form>
+      <form action="{% url 'hrapp:training_program_form' training_program.id %}" method="GET">
+            {% csrf_token %}
+            <button>Edit</button>
+        </form> {% endcomment %}
+{% endblock %}
+  </body>
+</html>

@@ -2,7 +2,9 @@ import sqlite3
 from django.shortcuts import render
 from hrapp.models import TrainingProgram
 from ..connection import Connection
-
+from django.urls import reverse
+from django.shortcuts import redirect
+from datetime import datetime
 
 
 def training_program_list(request):
@@ -11,7 +13,7 @@ def training_program_list(request):
             conn.row_factory = sqlite3.Row
             db_cursor = conn.cursor()
 
-            # TODO: Add to query: e.department,
+
             db_cursor.execute("""
             select
                 tp.id,
@@ -24,6 +26,9 @@ def training_program_list(request):
             """)
 
             all_training_programs = []
+            future_training_programs = []
+            past_training_programs = []
+            todaydate = datetime.today().strftime("%Y-%m-%d")
             dataset = db_cursor.fetchall()
 
             for row in dataset:
@@ -36,12 +41,39 @@ def training_program_list(request):
                 training_program.description = row['description']
 
 
-                all_training_programs.append(training_program)
+                if(training_program.start_date > todaydate):
+                    future_training_programs.append(training_program)
+                else:
+                    past_training_programs.append(training_program)
 
-    template = 'trainingprograms/training_programs_list.html'
-    context = {
-        'training_programs': all_training_programs
-    }
 
-    return render(request, template, context)
+
+            template = 'trainingprograms/training_programs_list.html'
+            context = {
+                'training_programs': all_training_programs,
+                'future_training_programs': future_training_programs
+            }
+
+        return render(request, template, context)
+
+
+    elif request.method == 'POST':
+        form_data = request.POST
+
+        with sqlite3.connect(Connection.db_path) as conn:
+            db_cursor = conn.cursor()
+
+            db_cursor.execute("""
+            INSERT INTO hrapp_trainingprogram
+            (
+                title, start_date, end_date,
+                capacity, description
+            )
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            (form_data['title'], form_data['start_date'],
+                form_data['end_date'], form_data['capacity'],
+                form_data["description"]))
+
+            return redirect(reverse('hrapp:trainingprograms'))
 
