@@ -31,15 +31,16 @@
         </fieldset>
         <fieldset>
             <label for="start_date">Start Date: </label>
-            <input id="start_date" type="number" name="start_date" value="{{ employee.start_date }}">
+            <input id="start_date" type="date" name="start_date" value="{{ employee.start_date }}">
         </fieldset>
         <fieldset>
-            <label for="isbn">ISBN: </label>
-            <input id="isbn" type="text" name="isbn" value="{{ book.isbn }}">
+            <label for="is_supervisor">Supervisor: </label>
+            <input class="is_supervisor" type="hidden" value='0' name="is_supervisor">
+            <input class="is_supervisor" type="checkbox" name="is_supervisor" value='1'>
         </fieldset>
         <fieldset>
             <label for="department">Department: </label>
-            <select id="department" type="text" name="department">
+            <select id="department" type="text" name="department_id">
                 {% for department in all_departments %}
                 <option {% if department.id == employee.department_id %}selected{% endif %} value="{{ department.id }}">
                     {{ department.name }}</option>

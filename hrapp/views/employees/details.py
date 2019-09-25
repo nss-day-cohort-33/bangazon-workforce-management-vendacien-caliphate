@@ -1,68 +1,107 @@
 import sqlite3
-from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from hrapp.models import Employee, Department, TrainingProgram
+from datetime import date
+from hrapp.models import Employee
+from hrapp.models import TrainingProgram
+from hrapp.models import EmployeeTrainingProgram
+from hrapp.models import Department
 from hrapp.models import model_factory
 from ..connection import Connection
 
 def get_employee(employee_id):
-    conn.row_factory = create_employee
-    db_cursor = conn.cursor()
+    with sqlite3.connect(Connection.db_path) as conn:
+        conn.row_factory =model_factory(Employee)
+        db_cursor = conn.cursor()
 
-    db_cursor.execute("""
-    SELECT
-        e.id employee_id,
-        e.first_name,
-        e.last_name,
-        d.id department_id,
-        d.name,
-        c.id computer_id,
-        tp.id training_program_id,
-        tp.title
-    FROM hrapp_employee e
-    JOIN hrapp_department d ON d.department_id = d.id
-    JOIN hrapp_trainingprogram tp ON tp.training_program_id = tp.id
-    WHERE e.id = ?
-    """, (employee_id,))
+        db_cursor.execute("""
+        select
+            e.id,
+            e.first_name,
+            e.last_name,
+            e.start_date,
+            e.is_supervisor,
+            e.department_id,
+            ec.id relationId,
+            ec.computer_id,
+            ec.employee_id,
+            c.make,
+            d.name
+        from hrapp_employee e
+        left join hrapp_department d on d.id = e.department_id
+        left join hrapp_employeecomputer ec on ec.employee_id = e.id
+        left join hrapp_computer c on c.id = ec.computer_id
+        where e.id = ?
+        """, (employee_id,))
 
-    return db_cursor.fetchone()
+        return db_cursor.fetchone()
+
+def get_training():
+    with sqlite3.connect(Connection.db_path) as conn:
+        conn.row_factory = model_factory(EmployeeTrainingProgram)
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        select
+            et.id,
+            et.employee_id,
+            et.training_program_id,
+            t.title,
+            t.start_date,
+            t.end_date,
+            t.capacity
+        from hrapp_employeetrainingprogram et
+        left join hrapp_trainingprogram t on t.id = et.training_program_id
+        """)
+
+        return db_cursor.fetchall()
+
+def get_departments():
+    with sqlite3.connect(Connection.db_path) as conn:
+        conn.row_factory = model_factory(Department)
+        db_cursor = conn.cursor()
+        db_cursor.execute("""
+        select
+            d.id,
+            d.dept_name,
+            d.budget
+        from hrapp_department d
+        """)
+        return db_cursor.fetchall()
+
 @login_required
 def employee_details(request, employee_id):
     if request.method == 'GET':
         employee = get_employee(employee_id)
-        template_name = 'employees/details.html'
-        return render(request, template_name, {'employee': employee})
+        trainings = get_training()
+
+        past_trainings = list()
+        plan_trainings = list()
+
+        for training in trainings:
+            if training.employee_id_id == employee.id:
+                if training.start_date < date.today().strftime("%Y/%m/%d"):
+                    past_trainings.append(training)
+                else:
+                    plan_trainings.append(training)
+
+        template = 'employees/details.html'
+        context = {
+            'employee': employee,
+            'past_trainings': past_trainings,
+            'plan_trainings': plan_trainings
+        }
+
+        return render(request, template, context)
 
     elif request.method == 'POST':
         form_data = request.POST
 
-        # Check if this POST is for editing a book
-        if (
-            "actual_method" in form_data
-            and form_data["actual_method"] == "PUT"
-        ):
-            with sqlite3.connect(Connection.db_path) as conn:
-                db_cursor = conn.cursor()
-
-                db_cursor.execute("""
-                UPDATE hrapp_employee
-                SET first_name = ?,
-                    last_name = ?,
-                    start_date = ?,
-                    is_supervisor = ?,
-                    department_id = ?
-                WHERE id = ?
-                """,
-                (
-                    form_data['first_name'], form_data['last_name'],
-                    form_data['start_date'], form_data['is_supervisor'],
-                    form_data["department_id"], employee_id,
-                ))
-
-            return redirect(reverse('hrapp:employees'))
-
         # Check if this POST is for deleting a book
+        #
+        # Note: You can use parenthesis to break up complex
+        #       `if` statements for higher readability
         if (
             "actual_method" in form_data
             and form_data["actual_method"] == "DELETE"
@@ -71,27 +110,27 @@ def employee_details(request, employee_id):
                 db_cursor = conn.cursor()
 
                 db_cursor.execute("""
-                    DELETE FROM hrapp_employee
-                    WHERE id = ?
+                DELETE FROM hrapp_employee
+                WHERE id = ?
                 """, (employee_id,))
 
-            return redirect(reverse('hrapp:employees'))
+            return redirect(reverse('hrapp:employee'))
 
-def create_book(cursor, row):
-    _row = sqlite3.Row(cursor, row)
+        if (
+            "actual_method" in form_data
+            and form_data["actual_method"] == "EDIT"
+        ):
+            with sqlite3.connect(Connection.db_path) as conn:
+                db_cursor = conn.cursor()
 
-    employee = Employee()
-    employee.id = _row["employee_id"]
-    employee.first_name = _row["first_name"]
-    employee.last_name = _row["last_name"]
-    employee.start_date = _row["start_date"]
-    employee.is_supervisor = _row["is_supervisor"]
+                employee = get_employee(employee_id)
 
-    department = Department()
-    department.id = _row["department_id"]
-    department.name = _row["name"]
+                departments = get_departments()
 
-    trainingprogram = TrainingProgram()
-    training_program.id = _row["training_program_id"]
+                template = "employees/form.html"
+                context = {
+                    'employee': employee,
+                    'departments': departments
+                }
 
-    return employee
+            return render(request, template, context)

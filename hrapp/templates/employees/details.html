@@ -5,12 +5,12 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Library</title>
+    <title>Bangazon Employee Details</title>
 </head>
 
 <body>
     {% block content %}
-    <section id="book-details">
+    <section id="employee-details">
         <h1>{{ employee.first_name }} {{ employee.last_name}}</h1>
 
         <div>Start Date: {{ employee.start_date }}</div>
@@ -18,7 +18,7 @@
     </section>
 
     <section id="employee-actions" style="display:flex;">
-        <form action="{% url 'hrapp:employees' employee.id %}" method="POST">
+        <form action="{% url 'hrapp:employee' employee.id %}" method="POST">
             {% csrf_token %}
             <input type="hidden" name="actual_method" value="DELETE">
             <button>Delete</button>

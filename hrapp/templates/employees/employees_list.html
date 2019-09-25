@@ -1,14 +1,25 @@
 {% extends 'shared/base.html' %}
-
-{% block content %}
-<h1>Employees</h1>
-
-<ol>
-{% for employee in employees %}
-    <li>
-        <a href="{% url 'hrapp:employees' %}"><p>{{ employee }}</p>
-        Current computer: {{employee.computer}}
-    </li>
-{% endfor %}
-</ol>
-{% endblock content %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Bangazon</title>
+  </head>
+  <body>
+  {% block content %}
+    <h1>Employees:</h1>
+    <a href="{% url 'hrapp:employee_form' %}">Hire an new employee</a>
+    <ol>
+    {% for employee in all_employees %}
+        <li>
+          <a href="{% url 'hrapp:employee' employee.id %}"> {{ employee.first_name }} {{ employee.last_name }}</a>
+          <br></br>
+          Department: {{employee.department.name}}
+          <br></br>
+        </li>
+    {% endfor %}
+    </ol>
+    {% endblock %}
+  </body>
+</html>

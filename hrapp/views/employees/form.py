@@ -57,12 +57,12 @@ def get_employee(employee_id):
 def employee_edit_form(request, employee_id):
 
     if request.method == 'GET':
-        book = get_employee(employee_id)
+        employee = get_employee(employee_id)
         departments = get_departments()
 
         template = 'employees/form.html'
         context = {
-            'book': book,
+            'employee': employee,
             'all_departments': departments
         }
 
