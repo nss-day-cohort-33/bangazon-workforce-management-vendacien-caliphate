@@ -1,6 +1,7 @@
 import sqlite3
 from django.shortcuts import render
-from hrapp.models import Department
+from hrapp.models import Department, Employee
+# from hrapp.models import model_factory
 from ..connection import Connection
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -10,6 +11,7 @@ from django.urls import reverse
 def department_list(request):
     if request.method == 'GET':
         with sqlite3.connect(Connection.db_path) as conn:
+            # conn.row_factory = model_factory(Department)
             conn.row_factory = sqlite3.Row
             db_cursor = conn.cursor()
 
@@ -25,11 +27,12 @@ def department_list(request):
             dataset = db_cursor.fetchall()
 
             for row in dataset:
-                book = Department()
-                book.id = row['id']
-                book.title = row['name']
-                book.isbn = row['budget']
-                all_departments.append(Department)
+                department = Department()
+                department.id = row['id']
+                department.name = row['name']
+                department.budget = row['budget']
+
+                all_departments.append(department)
 
         template = 'departments/departments_list.html'
         context = {
@@ -38,23 +41,40 @@ def department_list(request):
 
         return render(request, template, context)
 
-    # elif request.method == 'POST':
-    #     form_data = request.POST
-
-    #     with sqlite3.connect(Connection.db_path) as conn:
-    #         db_cursor = conn.cursor()
 
 
-    #         db_cursor.execute("""
-    #         INSERT INTO libraryapp_book
-    #         (
-    #             title, author, isbn,
-    #             year_published, location_id, librarian_id
-    #         )
-    #         VALUES (?, ?, ?, ?, ?, ?)
-    #         """,
-    #         (form_data['title'], form_data['author'],
-    #             form_data['isbn'], form_data['year_published'],
-    #             form_data["location"],request.user.librarian.id, ))
 
-    #     return redirect(reverse('libraryapp:books'))
+    #         all_departments = db_cursor.fetchall()
+    #         department_groups = {}
+
+    #         for department, employee in all_departments:
+    #             if department.id not in department_groups:
+    #                 department_groups[department.id] = department
+    #                 department_groups[department.id].employees.append(employee)
+
+    #             else:
+    #                 department_groups[department.id].employees.append(employee)
+    #     template_name = 'departments/departments_list.html'
+    #     context = {
+    #         'all_departments' : department_groups.values()
+    #     }
+    #     return render(request, template_name, context )
+
+
+    elif request.method == 'POST':
+        form_data = request.POST
+
+        with sqlite3.connect(Connection.db_path) as conn:
+            db_cursor = conn.cursor()
+
+            db_cursor.execute("""
+            INSERT INTO hrapp_department
+            (
+                name, budget
+            )
+            VALUES (?, ?)
+            """,
+            (form_data['name'], form_data['budget']))
+
+
+        return redirect(reverse('hrapp:departments'))
