@@ -1,3 +1,5 @@
+{% extends 'shared/base.html' %}
+
 {% load staticfiles %}
 <!DOCTYPE html>
 <html>
@@ -8,6 +10,9 @@
   </head>
 
   <body>
+
+      {% block content %}
+
     <section id="department-details">
         <h1>{{ department.name }}</h1>
         <h2> {{ department.budget }}</h2>
@@ -23,11 +28,11 @@
         <button>Delete</button>
     </form>
 
-    <form action="{% url 'hrapp:department_edit_form' department.id %}" method="GET">
+    <form action="{% url 'hrapp:department' department.id %}" method="GET">
             {% csrf_token %}
             <button>Edit</button>
         </form>
     </section>
-
+  {% endblock %}
   </body>
 </html>

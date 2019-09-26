@@ -3,11 +3,14 @@ from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from ..connection import Connection
+from hrapp.models import Department, Employee
+from hrapp.models import model_factory
 
 
 def get_department(department_id):
     with sqlite3.connect(Connection.db_path) as conn:
-        conn.row_factory = sqlite3.Row
+        # conn.row_factory = sqlite3.Row
+        conn.row_factory = model_factory(Department)
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
@@ -35,48 +38,43 @@ def department_details(request, department_id):
         return render(request, template, context)
 
 
-    if request.method == 'POST':
+    elif request.method == 'POST':
         form_data = request.POST
 
-    if (
-                "actual_method" in form_data
-                and form_data["actual_method"] == "PUT"
-            ):
-                with sqlite3.connect(Connection.db_path) as conn:
-                    db_cursor = conn.cursor()
+        if (
+            "actual_method" in form_data
+            and form_data["actual_method"] == "PUT"
+        ):
+            with sqlite3.connect(Connection.db_path) as conn:
+                db_cursor = conn.cursor()
 
-                    db_cursor.execute("""
-                    UPDATE hrapp_department
-                    SET name = ?,
-                        budget = ?
+                db_cursor.execute("""
+                UPDATE hrapp_department
+                SET name = ?,
+                    budget = ?
 
-                    WHERE id = ?
-                    """,
-                    (
-                        form_data['name'], form_data['budget'],
+                WHERE id = ?
+                """,
+                (
+                    form_data['name'], form_data['budget'],
 
-                        department_id,
-                    ))
+                    department_id,
+                ))
 
-                return redirect(reverse('hrapp:departments'))
-
-
+            return redirect(reverse('hrapp:departments'))
 
 
 
-
-
-
-    if (
+        if (
         "actual_method" in form_data
-        and form_data["actual_method"] == "DELETE"
-    ):
-        with sqlite3.connect(Connection.db_path) as conn:
-            db_cursor = conn.cursor()
+            and form_data["actual_method"] == "DELETE"
+        ):
+            with sqlite3.connect(Connection.db_path) as conn:
+                db_cursor = conn.cursor()
 
-            db_cursor.execute("""
-            DELETE FROM hrapp_department
-            WHERE id = ?
-            """, (department_id,))
+                db_cursor.execute("""
+                DELETE FROM hrapp_department
+                WHERE id = ?
+                """, (department_id,))
 
-        return redirect(reverse('hrapp:departments'))
+            return redirect(reverse('hrapp:departments'))
