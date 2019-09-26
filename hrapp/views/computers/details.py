@@ -32,14 +32,19 @@ def get_computer(computer_id):
 @login_required
 def computer_details(request, computer_id):
     if request.method == 'GET':
-        computer = get_computer(computer_id)
+        computeremployeetuple = get_computer(computer_id)
         template_name = 'computers/details.html'
-        return render(request, template_name, {'computer': computer})
+        context = {
+            "computer": computeremployeetuple[0],
+            "employee": computeremployeetuple[1]
+        }
+
+        return render(request, template_name, context)
 
     elif request.method == 'POST':
         form_data = request.POST
 
-        # Check if this POST is for editing a book
+        # Check if this POST is for editing a computer
         if (
             "actual_method" in form_data
             and form_data["actual_method"] == "PUT"
@@ -51,12 +56,13 @@ def computer_details(request, computer_id):
                 UPDATE hrapp_computer
                 SET make = ?,
                     purchase_date = ?,
-                    decommission_date = ?
+                    decommission_date = ?,
+                    first_name = ?
                 WHERE id = ?
                 """,
                 (
                     form_data['make'], form_data['purchase_date'],
-                    form_data['decommission_date'],
+                    form_data['decommission_date'], form_data['firsr_name'],
                 ))
 
             return redirect(reverse('hrapp:computers'))
@@ -90,4 +96,4 @@ def create_computer(cursor, row):
     employee.first_name = _row["first_name"]
     employee.last_name = _row["last_name"]
 
-    return computer
+    return (computer, employee)

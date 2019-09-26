@@ -39,13 +39,13 @@ def computer_form(request):
 def computer_edit_form(request, computer_id):
 
     if request.method == 'GET':
-        computer = get_computer(computer_id)
+        computeremployeetuple = get_computer(computer_id)
         employees = get_employees()
-
-        template = 'computers/form.html'
         context = {
-            'computer': computer,
-            'all_employees': employees
+            "computer": computeremployeetuple[0],
+            "all_employees": employees,
+            "employee": computeremployeetuple[1]
         }
+        template = 'computers/form.html'
 
         return render(request, template, context)
