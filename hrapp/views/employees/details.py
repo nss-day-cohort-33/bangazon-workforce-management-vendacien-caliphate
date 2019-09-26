@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from datetime import date
 from hrapp.models import Employee
+from hrapp.models import Computer
 from hrapp.models import TrainingProgram
 from hrapp.models import EmployeeTrainingProgram
 from hrapp.models import Department
@@ -64,7 +65,7 @@ def get_departments():
         db_cursor.execute("""
         select
             d.id,
-            d.dept_name,
+            d.name,
             d.budget
         from hrapp_department d
         """)
@@ -80,7 +81,7 @@ def employee_details(request, employee_id):
         plan_trainings = list()
 
         for training in trainings:
-            if training.employee_id_id == employee.id:
+            if training.employee_id == employee.id:
                 if training.start_date < date.today().strftime("%Y/%m/%d"):
                     past_trainings.append(training)
                 else:
@@ -100,21 +101,7 @@ def employee_details(request, employee_id):
 
         if (
             "actual_method" in form_data
-            and form_data["actual_method"] == "DELETE"
-        ):
-            with sqlite3.connect(Connection.db_path) as conn:
-                db_cursor = conn.cursor()
-
-                db_cursor.execute("""
-                DELETE FROM hrapp_employee
-                WHERE id = ?
-                """, (employee_id,))
-
-            return redirect(reverse('hrapp:employees'))
-
-        if (
-            "actual_method" in form_data
-            and form_data["actual_method"] == "EDIT"
+            and form_data["actual_method"] == "PUT"
         ):
             with sqlite3.connect(Connection.db_path) as conn:
                 db_cursor = conn.cursor()
@@ -129,4 +116,18 @@ def employee_details(request, employee_id):
                     'departments': departments
                 }
 
-            return render(request, template, context)
+            return redirect(reverse('hrapp:employees'))
+
+        if (
+            "actual_method" in form_data
+            and form_data["actual_method"] == "DELETE"
+        ):
+            with sqlite3.connect(Connection.db_path) as conn:
+                db_cursor = conn.cursor()
+
+                db_cursor.execute("""
+                DELETE FROM hrapp_employee
+                WHERE id = ?
+                """, (employee_id,))
+
+            return redirect(reverse('hrapp:employees'))

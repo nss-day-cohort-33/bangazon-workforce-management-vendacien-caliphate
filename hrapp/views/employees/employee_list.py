@@ -65,4 +65,4 @@ def employee_list(request):
                 form_data['start_date'], form_data['is_supervisor'],
                 form_data['department_id']))
 
-        return redirect(reverse('hrapp:employees'))
+        return redirect(reverse('hrapp:employee'))
