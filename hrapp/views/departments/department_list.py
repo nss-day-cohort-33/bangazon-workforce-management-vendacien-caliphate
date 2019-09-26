@@ -7,6 +7,8 @@ from django.shortcuts import redirect
 from django.urls import reverse
 # from django.contrib.auth.decorators import login_required
 
+
+
 # @login_required
 def department_list(request):
     if request.method == 'GET':
@@ -19,24 +21,36 @@ def department_list(request):
             select
                 d.id,
                 d.name,
-                d.budget
+                d.budget,
+                e.id employee_id,
+                e.department_id,
+                e.first_name,
+                e.last_name,
+                e.is_supervisor
             from hrapp_department d
+            JOIN hrapp_employee e ON d.id = e.department_id
             """)
 
-            all_departments = []
-            dataset = db_cursor.fetchall()
+            # all_departments = []
+            # dataset = db_cursor.fetchall()
 
-            for row in dataset:
-                department = Department()
-                department.id = row['id']
-                department.name = row['name']
-                department.budget = row['budget']
+            # for row in dataset:
+            #     department = Department()
+            #     department.id = row['id']
+            #     department.name = row['name']
+            #     department.budget = row['budget']
 
-                all_departments.append(department)
+            #     all_departments.append(department)
+
+            all_departments = db_cursor.fetchall()
+
+            # department_groups = {}
+
 
         template = 'departments/departments_list.html'
         context = {
             'all_departments': all_departments
+            #  'all_departments': department_groups.values()
         }
 
         return render(request, template, context)
@@ -47,18 +61,20 @@ def department_list(request):
     #         all_departments = db_cursor.fetchall()
     #         department_groups = {}
 
-    #         for department, employee in all_departments:
-    #             if department.id not in department_groups:
-    #                 department_groups[department.id] = department
-    #                 department_groups[department.id].employees.append(employee)
+        #     for department, employee in all_departments:
+        #         if department.id not in department_groups:
+        #             department_groups[department.id] = department
+        #             if employee.first_name is not None:
+        #                 department_groups[department.id].employees.append(employee)
 
-    #             else:
-    #                 department_groups[department.id].employees.append(employee)
-    #     template_name = 'departments/departments_list.html'
-    #     context = {
-    #         'all_departments' : department_groups.values()
-    #     }
-    #     return render(request, template_name, context )
+        #         else:
+        #             if employee.first_name is not None:
+        #                 department_groups[department.id].employees.append(employee)
+        # template_name = 'departments/departments_list.html'
+        # context = {
+        #     'all_departments' : department_groups.values()
+        # }
+        # return render(request, template_name, context )
 
 
     elif request.method == 'POST':

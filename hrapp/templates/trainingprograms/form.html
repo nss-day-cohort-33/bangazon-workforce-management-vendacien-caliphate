@@ -21,23 +21,23 @@
       {% csrf_token %}
       <fieldset>
           <label for="title">Title: </label>
-          <input id="title" type="text" name="title">
+          <input id="title" type="text" name="title" value="{{training_program.title}}">
       </fieldset>
       <fieldset>
           <label for="start_date">Start Date: </label>
-          <input id="start_date" type="date" name="start_date">
+          <input id="start_date" type="date" name="start_date" value="{{training_program.start_date}}">
       </fieldset>
       <fieldset>
           <label for="end_date">End Date: </label>
-          <input id="end_date" type="date" name="end_date">
+          <input id="end_date" type="date" name="end_date" value="{{training_program.end_date}}">
       </fieldset>
       <fieldset>
           <label for="capacity">Capacity: </label>
-          <input id="capacity" type="number" name="capacity">
+          <input id="capacity" type="number" name="capacity" value="{{training_program.capacity}}">
       </fieldset>
       <fieldset>
           <label for="description">Description: </label>
-          <input id="description" type="text" name="description">
+          <input id="description" type="text" name="description" value="{{training_program.description}}">
       </fieldset>
 
       <input type="submit" value="Add It" />

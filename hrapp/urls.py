@@ -17,7 +17,7 @@ urlpatterns = [
     path('computers/<int:computer_id>/', computer_details, name='computer'),
     path('computers/<int:computer_id>/form', computer_edit_form, name='computer_edit_form'),
     path('departments/', department_list, name='departments'),
-    # path('departments/', department_list, name='department_list'),
+    path('departments/', department_list, name='department_list'),
     path('department/form', department_form, name='department_form'),
     path('departments/<int:department_id>/', department_details, name='department'),
     path('departments/<int:department_id>/form', department_edit_form, name='department_edit_form'),
@@ -25,6 +25,8 @@ urlpatterns = [
     path('trainingprograms/', training_program_list, name='trainingprograms'),
     path('trainingprograms/past', past_program_list, name='past_programs'),
     path('trainingprograms/form', training_program_form, name='training_program_form'),
-    path('trainingprograms/<int:training_program_id>/', training_program_details, name='trainingprogram')
+    path('trainingprograms/<int:training_program_id>/', training_program_details, name='trainingprogram'),
+    path('trainingprograms/<int:training_program_id>/past', past_training_program_details, name='past_trainingprogram'),
+    path('trainingprograms/<int:training_program_id>/form', training_program_edit_form, name='training_program_edit_form')
 
 ]
