@@ -8,7 +8,6 @@ from hrapp.models import model_factory
 from .department_details import get_department
 
 
-
 def get_departments():
     with sqlite3.connect(Connection.db_path) as conn:
         # conn.row_factory = sqlite3.Row
@@ -36,8 +35,6 @@ def department_form(request):
 
         return render(request, template, context)
 
-
-
 # @login_required
 def department_edit_form(request, department_id):
 
@@ -52,5 +49,4 @@ def department_edit_form(request, department_id):
         }
 
         return render(request, template, context)
-
 
