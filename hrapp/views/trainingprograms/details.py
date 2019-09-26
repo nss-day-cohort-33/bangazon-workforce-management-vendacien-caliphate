@@ -61,7 +61,7 @@ def training_program_details(request, training_program_id):
                     form_data["description"], training_program_id
                 ))
 
-            return redirect(reverse('hrapp:trainingprogram'))
+            return redirect(reverse('hrapp:trainingprograms'))
 
         # Check if this POST is for deleting a book
         if (

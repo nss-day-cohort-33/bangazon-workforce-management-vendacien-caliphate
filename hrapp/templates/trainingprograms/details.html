@@ -20,11 +20,11 @@
     {% csrf_token %}
     <input type="hidden" name="actual_method" value="DELETE">
     <button>Delete</button>
-    {% comment %} </form>
-      <form action="{% url 'hrapp:training_program_form' training_program.id %}" method="GET">
+     </form>
+      <form action="{% url 'hrapp:training_program_edit_form' training_program.id %}" method="GET">
             {% csrf_token %}
             <button>Edit</button>
-        </form> {% endcomment %}
+        </form>
 {% endblock %}
   </body>
 </html>
