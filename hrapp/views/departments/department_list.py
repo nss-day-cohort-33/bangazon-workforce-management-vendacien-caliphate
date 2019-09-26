@@ -17,8 +17,14 @@ def department_list(request):
             select
                 d.id,
                 d.name,
-                d.budget
+                d.budget,
+                e.id employee_id,
+                e.department_id,
+                e.first_name,
+                e.last_name,
+                e.is_supervisor
             from hrapp_department d
+            JOIN hrapp_employee e ON d.id = e.department_id
             """)
 
             all_departments = []
