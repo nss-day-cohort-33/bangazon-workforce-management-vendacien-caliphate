@@ -6,26 +6,24 @@
     <meta charset="utf-8" />
     <title>Departments List</title>
   </head>
+
   <body>
-    {% block content %}
-    <h1>Departments</h1>
+      {% block content %}
+      <h1>Departments</h1>
 
-    <a href="{% url 'hrapp:department_form' %}">Create New Department</a>
+      <a href="{% url 'hrapp:department_form' %}">Create New Department</a>
 
-    <ol>
-      {% for department in all_departments %}
-      <li>
-        <p><a href="{% url 'hrapp:departments' department.id %}">{{ department.name }}</a></p>
-        <p>Budget: ${{ department.budget }}</p>
-        <p>Number of employees: {{ department.employees | length }}</p>
-      </li>
-      {% endfor %}
-    </ol>
-    {% endblock %}
-  </body>
+      <ol>
+        {% for department in all_departments %}
+        <li>
+          <p><a href="{% url 'hrapp:department' department.id %}">{{ department.name }}</a></p>
+          <p>Budget: ${{ department.budget }}</p>
+          <p>Number of employees: {{ department.employees | length }}</p>
+        </li>
+        {% endfor %}
+      </ol>
+      {% endblock %}
+    </body>
+
 </html>
 
-<!-- <li>
-  <a href="{% url 'libraryapp:book' book.id %}"> {{ book.title }} </a>
-  by {{book.author}} published in {{book.year_published}}
-</li> -->

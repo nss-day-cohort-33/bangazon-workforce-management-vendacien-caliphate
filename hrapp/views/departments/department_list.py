@@ -20,11 +20,7 @@ def department_list(request):
                 d.id,
                 d.name,
                 d.budget
-
-
             from hrapp_department d
-
-
             """)
 
             all_departments = []

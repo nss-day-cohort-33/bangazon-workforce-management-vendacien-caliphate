@@ -22,13 +22,13 @@
 </section>
 
 <section id="department-actions" style="display:flex;">
-    <form action="{% url 'hrapp:departments' department.id %}" method="POST">
+    <form action="{% url 'hrapp:department' department.id %}" method="POST">
         {% csrf_token %}
         <input type="hidden" name="actual_method" value="DELETE">
         <button>Delete</button>
     </form>
 
-    <form action="{% url 'hrapp:department' department.id %}" method="GET">
+    <form action="{% url 'hrapp:department_edit_form' department.id %}" method="GET">
             {% csrf_token %}
             <button>Edit</button>
         </form>
