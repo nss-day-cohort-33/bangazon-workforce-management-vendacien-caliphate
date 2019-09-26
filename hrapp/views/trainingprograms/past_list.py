@@ -7,7 +7,7 @@ from django.shortcuts import redirect
 from datetime import datetime
 
 
-def training_program_list(request):
+def past_program_list(request):
     if request.method == 'GET':
         with sqlite3.connect(Connection.db_path) as conn:
             conn.row_factory = sqlite3.Row
@@ -48,7 +48,7 @@ def training_program_list(request):
 
 
 
-            template = 'trainingprograms/training_programs_list.html',
+            template = 'trainingprograms/past.html',
             context = {
                 'past_training_programs': past_training_programs,
                 'future_training_programs': future_training_programs
