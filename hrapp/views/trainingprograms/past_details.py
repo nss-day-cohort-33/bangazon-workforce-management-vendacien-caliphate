@@ -29,10 +29,10 @@ def get_training_program(training_program_id):
         return db_cursor.fetchone()
 
 
-def training_program_details(request, training_program_id):
+def past_training_program_details(request, training_program_id):
     if request.method == 'GET':
         training_program = get_training_program(training_program_id)
-        template_name = 'trainingprograms/details.html'
+        template_name = 'trainingprograms/past_details.html'
         return render(request, template_name, {'training_program': training_program})
 
     elif request.method == 'POST':

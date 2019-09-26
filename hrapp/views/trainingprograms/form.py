@@ -2,6 +2,8 @@ import sqlite3
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from ..connection import Connection
+from .details import get_training_program
+# from ..employees import employee_list
 
 
 def get_training_programs():
@@ -28,6 +30,19 @@ def training_program_form(request):
         template = 'trainingprograms/form.html'
         context = {
             'all_training_programs': training_programs
+        }
+
+        return render(request, template, context)
+
+def training_program_edit_form(request, training_program_id):
+
+    if request.method == 'GET':
+        training_program = get_training_program(training_program_id)
+        # employees = employee_list()
+        template = 'trainingprograms/form.html'
+        context = {
+            'training_program': training_program,
+            # 'employees': employees
         }
 
         return render(request, template, context)
