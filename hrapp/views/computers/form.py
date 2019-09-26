@@ -28,7 +28,7 @@ def get_employees():
 def computer_form(request):
     if request.method == 'GET':
         employees = get_employees()
-        template = 'books/form.html'
+        template = 'computers/form.html'
         context = {
             'all_employees': employees
         }

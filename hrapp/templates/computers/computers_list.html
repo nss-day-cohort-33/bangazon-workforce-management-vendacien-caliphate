@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>Computers</h1>
-
+    <a href="{% url 'hrapp:computer_form' %}">Add Computer to Inventory</a>
 <ol>
 {% for computer in computers %}
     <li>
