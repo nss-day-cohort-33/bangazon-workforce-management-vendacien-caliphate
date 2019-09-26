@@ -1,4 +1,5 @@
 import sqlite3
+from datetime import date
 from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -43,44 +44,47 @@ def computer_details(request, computer_id):
 
     elif request.method == 'POST':
         form_data = request.POST
+        last_id = None
 
-        # Check if this POST is for editing a computer
-        if (
-            "actual_method" in form_data
-            and form_data["actual_method"] == "PUT"
-        ):
+        with sqlite3.connect(Connection.db_path) as conn:
+            db_cursor = conn.cursor()
+
+            db_cursor.execute("""
+            INSERT INTO hrapp_computer
+            (
+                make, purchase_date,
+                decommission_date
+            )
+            VALUES (?, ?, ?)
+            """,
+            (form_data['make'], form_data['purchase_date'],
+                form_data['decommission_date']))
+
+            db_cursor.execute("""
+            select last_insert_rowid()
+            """)
+
+            last_id = db_cursor.fetchone()
+
+        if form_data['employee'] != 'Null':
             with sqlite3.connect(Connection.db_path) as conn:
                 db_cursor = conn.cursor()
 
                 db_cursor.execute("""
-                UPDATE hrapp_computer
-                SET make = ?,
-                    purchase_date = ?,
-                    decommission_date = ?,
-                    first_name = ?
-                WHERE id = ?
+                INSERT INTO hrapp_employeecomputer
+                (
+                    computer_id,
+                    employee_id
+                )
+                VALUES (?, ?)
                 """,
                 (
-                    form_data['make'], form_data['purchase_date'],
-                    form_data['decommission_date'], form_data['firsr_name'],
-                ))
+                    last_id[0], form_data['employee']))
 
-            return redirect(reverse('hrapp:computers'))
 
-        # Check if this POST is for deleting a computer
-        if (
-            "actual_method" in form_data
-            and form_data["actual_method"] == "DELETE"
-        ):
-            with sqlite3.connect(Connection.db_path) as conn:
-                db_cursor = conn.cursor()
+        return redirect(reverse('hrapp:computers'))
 
-                db_cursor.execute("""
-                    DELETE FROM hrapp_computer
-                    WHERE id = ?
-                """, (computer_id,))
 
-            return redirect(reverse('hrapp:computers'))
 
 def create_computer(cursor, row):
     _row = sqlite3.Row(cursor, row)

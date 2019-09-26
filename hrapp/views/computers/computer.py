@@ -30,8 +30,10 @@ def computer_list(request):
         }
 
         return render(request, template, context)
+        
     elif request.method == 'POST':
         form_data = request.POST
+        last_id = None
 
         with sqlite3.connect(Connection.db_path) as conn:
             db_cursor = conn.cursor()
@@ -39,11 +41,34 @@ def computer_list(request):
             db_cursor.execute("""
             INSERT INTO hrapp_computer
             (
-                make, purchase_date, decommission_date
+                make, purchase_date,
+                decommission_date
             )
             VALUES (?, ?, ?)
             """,
             (form_data['make'], form_data['purchase_date'],
                 form_data['decommission_date']))
+
+            db_cursor.execute("""
+            select last_insert_rowid()
+            """)
+
+            last_id = db_cursor.fetchone()
+
+        if form_data['employee'] != 'Null':
+            with sqlite3.connect(Connection.db_path) as conn:
+                db_cursor = conn.cursor()
+
+                db_cursor.execute("""
+                INSERT INTO hrapp_employeecomputer
+                (
+                    computer_id,
+                    employee_id
+                )
+                VALUES (?, ?)
+                """,
+                (
+                    last_id[0], form_data['employee']))
+
 
         return redirect(reverse('hrapp:computers'))

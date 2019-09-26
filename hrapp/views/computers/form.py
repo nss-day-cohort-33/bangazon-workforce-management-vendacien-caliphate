@@ -43,8 +43,8 @@ def computer_edit_form(request, computer_id):
         employees = get_employees()
         context = {
             "computer": computeremployeetuple[0],
-            "all_employees": employees,
-            "employee": computeremployeetuple[1]
+            "employee": computeremployeetuple[1],
+            "all_employees": employees
         }
         template = 'computers/form.html'
 
