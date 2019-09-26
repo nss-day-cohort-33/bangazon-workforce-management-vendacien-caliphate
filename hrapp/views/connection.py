@@ -1,2 +1,2 @@
 class Connection:
-    db_path = "/Users/kgallegos/workspace/python/bangazon-workforce-management-vendacien-caliphate/db.sqlite3"
+    db_path = "/Users/alexr_ku9a8gr/Workspace/bangazon/bangazon-workforce-management-vendacien-caliphate/db.sqlite3"

@@ -15,7 +15,15 @@
 
         <div>Start Date: {{ employee.start_date }}</div>
         <div>Department: {{ employee.department.name }}</div>
-        <div>Computer: {{ employee.computer.make }}</div>
+        <div>Computer: {{ employee.make }}</div>
+        <div>Trainings Attended:</div>
+        {% for trainingprogram in past_trainings %}
+        <div>{{ trainingprogram.title }}</div>
+        {% endfor %}
+        <div>Future Trainings:</div>
+        {% for trainingprogram in plan_trainings %}
+        <div>{{ trainingprogram.title }}</div>
+        {% endfor %}
     </section>
 
     <section id="employee-actions" style="display:flex;">

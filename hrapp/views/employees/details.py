@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from datetime import date
 from hrapp.models import Employee
+from hrapp.models import Computer
 from hrapp.models import TrainingProgram
 from hrapp.models import EmployeeTrainingProgram
 from hrapp.models import Department
@@ -80,7 +81,7 @@ def employee_details(request, employee_id):
         plan_trainings = list()
 
         for training in trainings:
-            if training.employee_id_id == employee.id:
+            if training.employee_id == employee.id:
                 if training.start_date < date.today().strftime("%Y/%m/%d"):
                     past_trainings.append(training)
                 else:
@@ -130,5 +131,3 @@ def employee_details(request, employee_id):
                 """, (employee_id,))
 
             return redirect(reverse('hrapp:employees'))
-
-            # return employee
