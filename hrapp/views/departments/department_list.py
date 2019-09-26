@@ -7,6 +7,29 @@ from django.shortcuts import redirect
 from django.urls import reverse
 # from django.contrib.auth.decorators import login_required
 
+def create_department(cursor, row):
+    _row = sqlite3.Row(cursor, row)
+
+    department = Department()
+    department.id = _row["id"]
+    department.name = _row["name"]
+    department.budget = _row["budget"]
+
+    department.employees = []
+
+    employee = Employee()
+    employee.id = _row ["employee_id"]
+    employee.first_name = _row["first_name"]
+    employee.last_name = _row["last_name"]
+    employee.department_id = _row["department_id"]
+
+
+    return (department, employee)
+
+
+
+
+
 # @login_required
 def department_list(request):
     if request.method == 'GET':
@@ -29,20 +52,26 @@ def department_list(request):
             JOIN hrapp_employee e ON d.id = e.department_id
             """)
 
-            all_departments = []
-            dataset = db_cursor.fetchall()
+            # all_departments = []
+            # dataset = db_cursor.fetchall()
 
-            for row in dataset:
-                department = Department()
-                department.id = row['id']
-                department.name = row['name']
-                department.budget = row['budget']
+            # for row in dataset:
+            #     department = Department()
+            #     department.id = row['id']
+            #     department.name = row['name']
+            #     department.budget = row['budget']
 
-                all_departments.append(department)
+            #     all_departments.append(department)
+
+            all_departments = db_cursor.fetchall()
+
+            # department_groups = {}
+
 
         template = 'departments/departments_list.html'
         context = {
             'all_departments': all_departments
+            #  'all_departments': department_groups.values()
         }
 
         return render(request, template, context)
