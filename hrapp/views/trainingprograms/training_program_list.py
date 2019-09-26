@@ -43,7 +43,7 @@ def training_program_list(request):
 
                 if(training_program.start_date > todaydate):
                     future_training_programs.append(training_program)
-                elif(training_program.end_date < todaydate):
+                if(training_program.end_date < todaydate):
                     past_training_programs.append(training_program)
 
 

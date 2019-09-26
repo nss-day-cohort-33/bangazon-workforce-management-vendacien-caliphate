@@ -13,3 +13,4 @@ from .trainingprograms.form import training_program_form
 from .trainingprograms.details import training_program_details
 from .trainingprograms.past_list import past_program_list
 from .trainingprograms.form import training_program_edit_form
+from .trainingprograms.past_details import past_training_program_details
