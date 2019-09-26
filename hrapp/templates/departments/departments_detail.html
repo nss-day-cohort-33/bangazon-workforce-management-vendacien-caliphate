@@ -1,38 +1,45 @@
-{% extends 'shared/base.html' %}
-
-{% load staticfiles %}
+{% extends 'shared/base.html' %} {% load humanize %} {% load staticfiles %}
 <!DOCTYPE html>
 <html>
-
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>Department</title>
   </head>
 
   <body>
-
-      {% block content %}
+    {% block content %}
 
     <section id="department-details">
-        <h1>{{ department.name }}</h1>
-        <h2> {{ department.budget }}</h2>
+      <h4>Department Name: {{ department.name }}</h4>
+      <p>Budget: ${{ department.budget | intcomma }}</p>
+      {% if employees|length is not 0 %}
+      <h3>Employee List</h3>
+      {% endif %}
 
-    <!-- <div>Published in {{ book.year_published }}</div>
-    <div>ISBN: {{ book.isbn }}</div> -->
-</section>
+      <ol>
+        {% for employee in department.employees %}
 
-<section id="department-actions" style="display:flex;">
-    <form action="{% url 'hrapp:department' department.id %}" method="POST">
-        {% csrf_token %}
-        <input type="hidden" name="actual_method" value="DELETE">
-        <button>Delete</button>
-    </form>
+        <li>Employees: {{ employee.first_name }} {{ employee.last_name }}</li>
 
-    <form action="{% url 'hrapp:department_edit_form' department.id %}" method="GET">
-            {% csrf_token %}
-            <button>Edit</button>
-        </form>
+        {% endfor %}
+      </ol>
     </section>
-  {% endblock %}
+
+    <section id="department-actions" style="display:flex;">
+      <form action="{% url 'hrapp:department' department.id %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="actual_method" value="DELETE" />
+        <button>Delete</button>
+      </form>
+
+      <form
+        action="{% url 'hrapp:department_edit_form' department.id %}"
+        method="GET"
+      >
+        {% csrf_token %}
+        <button>Edit</button>
+      </form>
+    </section>
+    {% endblock %}
   </body>
 </html>
