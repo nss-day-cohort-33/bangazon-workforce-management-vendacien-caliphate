@@ -1,0 +1,34 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Computers</title>
+</head>
+
+<body>
+
+    <section id="computer-details">
+
+        <div>Make: {{ computer.make }}</div>
+        <div>Purchase date: {{ computer.purchase_date }}</div>
+        <div>Registered by: {{ employee.first_name}} {{employee.last_name}}</div>
+    </section>
+
+    <section id="computer-actions" style="display:flex;">
+        <form action="{% url 'hrapp:computer' computer.id %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="actual_method" value="DELETE">
+            <button>Delete</button>
+        </form>
+
+        <form action="{% url 'hrapp:computer_edit_form' computer.id %}" method="GET">
+            {% csrf_token %}
+            <button>Edit</button>
+        </form>
+    </section>
+
+</body>
+
+</html>

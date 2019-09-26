@@ -1,0 +1,47 @@
+{% extends 'shared/base.html' %}
+
+{% block content %}
+
+    <h1>Computerz Inventory</h1>
+
+    {% if computer.id is not None %}
+        <form action="{% url 'hrapp:computer' computer.id %}" method="post">
+    {% else %}
+        <form action="{% url 'hrapp:computers' %}" method="post">
+    {% endif %}
+        {% csrf_token %}
+        <fieldset>
+            <label for="make">Computer make: </label>
+            <input id="make" type="text" name="make" value="{{ computer.make }}">
+        </fieldset>
+        <fieldset>
+            <label for="purchase_date">Purchase date: </label>
+            <input id="purchase_date" type="text" name="purchase_date" value="{{ computer.purchase_date }}">
+        </fieldset>
+        <fieldset>
+            <label for="decommission_date">Decommission date: </label>
+            <input id="decommission_date" type="text" name="decommission_date" value="{{ computer.decommission_date }}">
+        </fieldset>
+        <fieldset>
+            <label for="employee_name">Assigned employee name: </label>
+            <input id="employee_name" type="text" name="employee_name" value="{{ employee.first_name }} {{employee.last_name}}">
+        </fieldset>
+        <fieldset>
+            <label for="employee">Employee: </label>
+            <select id="employee" type="text" name="employee">
+                {% for employee in all_employees %}
+                <option {% if employee.id == computer_id %}selected{% endif %} value="{{ employee.id }}">
+                    {{ employee.first_name }}</option>
+                {% endfor %}
+            </select>
+        </fieldset>
+
+        {% if computer.id is not None %}
+            <input type="hidden" name="actual_method" value="PUT">
+            <input type="submit" value="Update" />
+        {% else %}
+            <input type="submit" value="Create" />
+        {% endif %}
+
+    </form>
+{% endblock %}

@@ -2,13 +2,12 @@
 
 {% block content %}
 <h1>Computers</h1>
-
+    <a href="{% url 'hrapp:computer_form' %}">Add Computer to Inventory</a>
 <ol>
 {% for computer in computers %}
     <li>
-        <p>{{ computer.make }}</p>
-        <a href=# >Details</a>
-
+    {{computer.make}}
+        <a href="{% url 'hrapp:computer' computer.id %}"> {{ computer.make }} </a>
     </li>
 {% endfor %}
 </ol>
